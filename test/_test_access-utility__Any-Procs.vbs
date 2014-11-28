@@ -1,5 +1,5 @@
 ' @import ../lib/myutil.vbs
-' @import ../lib/access-utility.vbs
+' @import ../lib/msaccess-utility.vbs
 
 Option Explicit
 
