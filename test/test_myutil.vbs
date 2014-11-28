@@ -10,11 +10,11 @@ Const assets_dir = "assets"
 Sub Test_CopyFile_WrongPath
   On Error Resume Next
 
+  Err.Clear
   Call CopyFile("", "C:\Windows\Temp")
   AssertEqual 513, Err.Number
 
   Err.Clear
-
   Call CopyFile("C:\Windows\Temp", "")
   AssertEqual 513, Err.Number
 End Sub
