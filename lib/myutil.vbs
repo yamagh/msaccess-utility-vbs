@@ -1,7 +1,8 @@
 Option Explicit
 
-Const Err_WrongPath = 513
-Const Err_WrongFile = 514
+Const Err_WrongPath  = 513
+Const Err_WrongFile  = 514
+Const Err_WrongParam = 515
 
 Function NewFSO
   Set NewFSO = CreateObject("Scripting.FileSystemObject")
@@ -82,3 +83,13 @@ Sub UnZip(path)
 
   NewShell.Namespace(dir_path).CopyHere NewShell.Namespace(path).Items, FOF_SILENT + FOF_NOCONFIRMATION
 End Sub
+
+' String Control Functions
+' ========================
+
+Function CountInStr(str, find)
+  If Len(str) = 0 Or Len(find) = 0 Then
+    Err.Raise Err_WrongParam, "myutil.CountInStr", "Specified params is wrong."
+  End If
+  CountInStr = UBound(Split(str, find))
+End Function
