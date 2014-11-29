@@ -159,10 +159,10 @@ Function GetLinesInStr(str, start, line_count)
   Dim str_arr
   str_arr = Split(str, vbNewLine)
   Dim max_lines
-  max_lines = CountInStr(str, vbNewLine) + 1
+  max_lines = UBound(str_arr) + 1
   line_count = IIF(line_count = -1, max_lines - start + 1, line_count)
   Dim i
-  For i = 1 To UBound(str_arr) + 1
+  For i = 1 To max_lines
     If start <= i And i < (start + line_count -1) Then
       text = text & str_arr(i-1) & vbNewLine
     ElseIf i = (start + line_count -1) Then
