@@ -34,6 +34,20 @@ Function CheckExistsPath(path)
   End With
 End Function
 
+Sub Touch(path)
+  If CheckExistsPath(path) Then
+    Dim file_path
+    file_path = NewFSO.GetFile(path).Path
+    Dim parent_path
+    parent_path = NewFSO.GetParentFolderName(file_path)
+    Dim file_name
+    file_name = NewFSO.GetFileName(path)
+    NewShell.NameSpace(parent_path).Items.Item(file_name).ModifyDate = Now
+  Else
+    NewFSO.CreateTextFile(path)
+  End If
+End Sub
+
 ' Zip Control Functions
 ' =====================
 
