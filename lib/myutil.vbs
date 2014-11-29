@@ -12,6 +12,26 @@ Function NewShell
   Set NewShell = CreateObject("Shell.Application")
 End Function
 
+Function NewDic
+  Set NewDic = CreateObject("Scripting.Dictionary")
+End Function
+
+Function NewRegExp(pattern, opt)
+  Dim re
+  Set re = New RegExp
+  re.Pattern = pattern
+  If InStr(opt, "i") Then
+    re.IgnoreCase = True
+  End If
+  If InStr(opt, "g") Then
+    re.Global = True
+  End If
+  If InStr(opt, "m") Then
+    re.MultiLine = True
+  End If
+  Set NewRegExp = re
+End Function
+
 ' File Control Functions
 ' ======================
 
@@ -98,4 +118,79 @@ Function CountInStr(str, find)
     Err.Raise Err_WrongParam, "myutil.CountInStr", "Specified params is wrong."
   End If
   CountInStr = UBound(Split(str, find))
+End Function
+
+Function FindInStr(str, find, opt)
+  Dim found
+  Set found = NewDic
+  Dim mt
+  For Each mt In NewRegExp(find, opt).Execute(str)
+    Dim dic
+    Set dic = NewDic
+    dic.Add "Row", CountInStr(Left(str, mt.FirstIndex + 1), vbNewLine) + 1
+    dic.Add "Column", GetColumnInStr(str, mt.FirstIndex+1)
+    dic.Add "Match", mt.Value
+    dic.Add "Text", GetLinesInStr(str, dic("Row"), CountInStr(mt.Value, vbNewLine) + 1)
+    found.Add found.Count + 1, dic
+  Next
+  Set FindInStr = found
+End Function
+
+' str :: 対象文字列
+' start :: 取得開始行
+' line_count :: 取得する行数。-1を指定する場合 `start` で指定する行以降全てとなる。
+Function GetLinesInStr(str, start, line_count)
+  Dim text
+  Dim str_arr
+  str_arr = Split(str, vbNewLine)
+  Dim max_lines
+  max_lines = CountInStr(str, vbNewLine) + 1
+  line_count = IIF(line_count = -1, max_lines - start + 1, line_count)
+  Dim i
+  For i = 1 To UBound(str_arr) + 1
+    If start <= i And i < (start + line_count -1) Then
+      text = text & str_arr(i-1) & vbNewLine
+    ElseIf i = (start + line_count -1) Then
+      text = text & str_arr(i-1)
+    End If
+  Next
+  GetLinesInStr = text
+End Function
+
+Function GetColumnInStr(str, pos)
+  If Len(str) < pos Or pos < 0 Then
+    Err.Raise 513, "myutil.GetColumnInStr", "Specified position is wrong."
+  End If
+  Dim col
+  col = -1
+  Dim i
+  For i = 1 To pos
+    Dim c
+    c = Mid(str, i, 1)
+    If c = vbCr Or c = vbLf Then
+      col = -1
+    Else
+      col = IIF(col=-1, 1, col + 1)
+    End If
+  Next
+  GetColumnInStr = col
+End Function
+
+' Other Functions
+' ===============
+
+Function IIF(exp, t, f)
+  If exp = True Then
+    If IsObject(t) Then
+      Set IIF = t
+    Else
+      IIF = t
+    End If
+  Else
+    If IsObject(t) Then
+      Set IIF = f
+    Else
+      IIF = f
+    End If
+  End If
 End Function
