@@ -120,6 +120,17 @@ Function CountInStr(str, find)
   CountInStr = UBound(Split(str, find))
 End Function
 
+' # Args
+' str
+'     Source strings for search.
+' find
+'     Search query in `str`. You can use RegExp pattern string.
+' opt
+'     RegExp Option.
+'     Ex) "igm"
+'     Case: "i" IgnoreCase = True
+'           "g" Global = True
+'           "m" MultiLine = True
 Function FindInStr(str, find, opt)
   Dim found
   Set found = NewDic
@@ -136,9 +147,13 @@ Function FindInStr(str, find, opt)
   Set FindInStr = found
 End Function
 
-' str :: 対象文字列
-' start :: 取得開始行
-' line_count :: 取得する行数。-1を指定する場合 `start` で指定する行以降全てとなる。
+' # Args
+' str
+'     Source strings.
+' start
+'     Start of lines to get.
+' line_count
+'     Count of lines to get.
 Function GetLinesInStr(str, start, line_count)
   Dim text
   Dim str_arr
