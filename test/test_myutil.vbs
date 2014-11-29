@@ -2,8 +2,6 @@
 
 Option Explicit
 
-Const assets_dir = "assets"
-
 ' File Control Functions
 ' ======================
 
