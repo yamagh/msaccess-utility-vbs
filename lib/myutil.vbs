@@ -35,16 +35,23 @@ Function CheckExistsPath(path)
 End Function
 
 Sub Touch(path)
+  Dim parent_path
   If CheckExistsPath(path) Then
-    Dim file_path
-    file_path = NewFSO.GetFile(path).Path
-    Dim parent_path
-    parent_path = NewFSO.GetParentFolderName(file_path)
-    Dim file_name
-    file_name = NewFSO.GetFileName(path)
+    With NewFSO
+      Dim file_path
+      file_path = .GetFile(path).Path
+      parent_path = .GetParentFolderName(file_path)
+      Dim file_name
+      file_name = .GetFileName(path)
+    End With
     NewShell.NameSpace(parent_path).Items.Item(file_name).ModifyDate = Now
   Else
-    NewFSO.CreateTextFile(path)
+    With NewFSO
+      parent_path = .GetParentFolderName(path)
+      If CheckExistsPath(parent_path) Then
+        .CreateTextFile(path)
+      End If
+    End With
   End If
 End Sub
 

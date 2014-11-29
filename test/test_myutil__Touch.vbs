@@ -12,10 +12,17 @@ Sub TearDown
   NewFSO.DeleteFolder("temp")
 End Sub
 
-Sub Test_Create
-  Touch("temp\tmp")
-  AssertEqual True, NewFSO.FileExists("temp\tmp")
-  NewFSO.DeleteFile("temp\tmp")
+Sub Test_Create_01
+  Const TEMP_FILE_PATH = "temp\tmp"
+  Touch(TEMP_FILE_PATH)
+  AssertEqual True, NewFSO.FileExists(TEMP_FILE_PATH)
+  NewFSO.DeleteFile(TEMP_FILE_PATH)
+End Sub
+
+Sub Test_Create_02
+  Const TEMP_FILE_PATH = "temp\sub\tmp"
+  Touch(TEMP_FILE_PATH)
+  AssertEqual False, NewFSO.FileExists(TEMP_FILE_PATH)
 End Sub
 
 Sub Test_Update_Timestamp
