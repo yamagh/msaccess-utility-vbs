@@ -19,7 +19,9 @@ Sub CopyFile(source, dest)
     Err.Raise Err_WrongPath, "myutil.CopyFile", "Copy source is not exist."
   End If
 
-  If CheckExistsPath(dest) = False Then
+  Dim parent
+  parent = NewFSO.GetParentFolderName(dest)
+  If CheckExistsPath(parent) = False Then
     Err.Raise Err_WrongPath, "myutil.CopyFile", "Copy destination is not exist."
   End If
 

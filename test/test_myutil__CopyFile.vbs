@@ -2,6 +2,20 @@
 
 Option Explicit
 
+Sub SetUp
+  With NewFSO
+    .CreateFolder("source")
+    .CreateFolder("dest")
+  End With
+End Sub
+
+Sub TearDown
+  With NewFSO
+    .DeleteFolder("source")
+    .DeleteFolder("dest")
+  End With
+End Sub
+
 Sub Test_CopyFile_WrongPath
   On Error Resume Next
 
@@ -15,14 +29,7 @@ Sub Test_CopyFile_WrongPath
 End Sub
 
 Sub Test_CopyFile_Success
-  CopyFile "C:\tmp\s\source.txt", "C:\tmp\d\"
-End Sub
-
-Sub Test_CheckExistsPath
-  AssertEqual True, CheckExistsPath("C:\Windows")
-  AssertEqual True, CheckExistsPath("C:\Windows\System32\wscript.exe")
-
-  AssertEqual False, CheckExistsPath("")
-  AssertEqual False, CheckExistsPath("C:\Apple")
-  AssertEqual False, CheckExistsPath("C:\Windows\System32\wscript.hoge")
+  Touch "source\foo.txt"
+  CopyFile "source\foo.txt", "dest\foo.txt"
+  AssertEqual True, NewFSO.FileExists("dest\foo.txt")
 End Sub
