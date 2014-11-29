@@ -62,15 +62,6 @@ End Sub
 ' =====================
 
 Sub UnZip(path)
-  Dim fso : Set fso = NewFSO
-  If fso.GetExtensionName(path) <> "zip" Then
-    Err.Raise Err_WrongFile, "myutil.UnZip", "Specified file is not zip file."
-  End If
-
-  Dim dir_name : dir_name = fso.GetBaseName(path)
-  Dim dir_path : dir_path = fso.BuildPath(fso.GetParentFolderName(path), dir_name)
-  If fso.FolderExists(dir_path) = False Then fso.CreateFolder dir_path
-
   Const FOF_SILENT            = &H04
   Const FOF_RENAMEONCOLLISION = &H08
   Const FOF_NOCONFIRMATION    = &H10
@@ -81,7 +72,22 @@ Sub UnZip(path)
   Const FOF_NOERRORUI         = &H400
   Const FOF_NORECURSION       = &H1000
 
-  NewShell.Namespace(dir_path).CopyHere NewShell.Namespace(path).Items, FOF_SILENT + FOF_NOCONFIRMATION
+  With NewFSO
+    If .GetExtensionName(path) <> "zip" Then
+      Err.Raise Err_WrongFile, "myutil.UnZip", "Specified file is not zip file."
+    End If
+    Dim dir_name
+    dir_name = .GetBaseName(path)
+    Dim dir_path
+    dir_path = .BuildPath(.GetParentFolderName(path), dir_name)
+    If .FolderExists(dir_path) = False Then
+      .CreateFolder dir_path
+    End If
+  End With
+
+  With NewShell
+    .Namespace(dir_path).CopyHere .Namespace(path).Items, FOF_SILENT + FOF_NOCONFIRMATION
+  End With
 End Sub
 
 ' String Control Functions
