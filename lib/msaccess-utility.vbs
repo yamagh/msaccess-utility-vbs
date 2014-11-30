@@ -14,7 +14,7 @@ Class MSAccessUtility
   End Sub
 
   Public Default Property Get ToString
-    ToString = "AccessUtil"
+    ToString = "AccessUtility"
   End Property
 
   Public Property Get App
@@ -22,7 +22,7 @@ Class MSAccessUtility
   End Property
 
   Public Sub Open(path)
-    Call Application.OpenCurrentDatabase(path)
+    Application.OpenCurrentDatabase(path)
   End Sub
 
   Public Sub BypassOpen
