@@ -28,7 +28,7 @@ End Sub
 ' ===============
 
 Sub Test_DefaultProperty
-AssertEqual "AccessUtil", au
+AssertEqual "AccessUtility", au
 End Sub
 
 ' Property App
