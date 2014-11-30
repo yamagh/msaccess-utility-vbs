@@ -1,6 +1,6 @@
 Option Explicit
 
-Class AccessUtility
+Class MSAccessUtility
   Public Application
 
   Private Sub Class_Initialize

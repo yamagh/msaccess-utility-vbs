@@ -6,7 +6,7 @@ Option Explicit
 Dim au
 
 Sub SetUp
-  Set au = New AccessUtility
+  Set au = New MSAccessUtility
 End Sub
 
 Sub TearDown
